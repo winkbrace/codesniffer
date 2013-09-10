@@ -86,6 +86,12 @@ class WinkBrace_Sniffs_Methods_ConstructorSpacingSniff extends PHP_CodeSniffer_S
             }
             else
             {
+                // if there are no class attributes declared, the spacing is not required
+                if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET)
+                {
+                    return;
+                }
+                
                 // the first line that is not a comment and not a whitespace should be 3 lines less than $line,
                 // because 2 lines must be blank
                 if ($tokens[$i]['line'] !== $line - 3)

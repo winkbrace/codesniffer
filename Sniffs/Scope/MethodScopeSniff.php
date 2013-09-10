@@ -64,7 +64,7 @@ class WinkBrace_Sniffs_Scope_MethodScopeSniff extends PHP_CodeSniffer_Standards_
             return;
         }
         
-        // ignore magic functions ( __construct() __toString etc )
+        // ignore magic functions ( __construct, __toString, etc )
         if (substr($methodName, 0, 2) == '__')
         {
             return;
@@ -73,7 +73,7 @@ class WinkBrace_Sniffs_Scope_MethodScopeSniff extends PHP_CodeSniffer_Standards_
         $modifier = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$scopeModifiers, $stackPtr);
         if (($modifier === false) || ($tokens[$modifier]['line'] !== $tokens[$stackPtr]['line']))
         {
-            $error = 'No scope modifier specified for function "%s"';
+            $error = 'No scope modifier (public/protected) specified for function "%s"';
             $data  = array($methodName);
             $phpcsFile->addError($error, $stackPtr, 'Missing', $data);
         }

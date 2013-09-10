@@ -57,7 +57,7 @@ class WinkBrace_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Code
     {
         $tokens  = $phpcsFile->getTokens();
         $varName = ltrim($tokens[$stackPtr]['content'], '$');
-
+        
         $phpReservedVars = array(
                             '_SERVER',
                             '_GET',
@@ -87,21 +87,17 @@ class WinkBrace_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Code
                 if ($tokens[$bracket]['code'] !== T_OPEN_PARENTHESIS)
                 {
                     $objVarName = $tokens[$var]['content'];
-
-                    // There is no way for us to know if the var is public or private,
-                    // so we have to ignore a leading underscore if there is one and just
-                    // check the main part of the variable name.
-                    $originalVarName = $objVarName;
-                    if (substr($objVarName, 0, 1) === '_')
+                    
+                    // objects can be created as objects of database rows, so will include underscores
+                    // For that reason ignore variables after an object operator
+                    if ($tokens[$objOperator]['code'] !== T_OBJECT_OPERATOR)
                     {
-                        $objVarName = substr($objVarName, 1);
-                    }
-
-                    if (PHP_CodeSniffer::isCamelCaps($objVarName, false, true, false) === false)
-                    {
-                        $error = 'Variable "%s" is not in valid camel caps format';
-                        $data  = array($originalVarName);
-                        $phpcsFile->addError($error, $var, 'NotCamelCaps', $data);
+                        if (PHP_CodeSniffer::isCamelCaps($objVarName, false, true, false) === false)
+                        {
+                            $error = 'Variable "%s" is not in valid camel caps format';
+                            $data  = array($objVarName);
+                            $phpcsFile->addError($error, $var, 'NotCamelCaps', $data);
+                        }
                     }
                 }//end if
             }//end if
