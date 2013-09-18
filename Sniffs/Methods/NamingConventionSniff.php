@@ -62,6 +62,10 @@ class WinkBrace_Sniffs_Methods_NamingConventionSniff extends PHP_CodeSniffer_Sta
         if ($methodName === null)
             return;
         
+        // allow Codeception defaults
+        if (in_array($methodName, array('_before', '_after')))
+            return;
+        
         if (strpos($methodName, '_') !== false && substr($methodName, 0, 2) !== '__')
         {
             $error = 'Method names must be in camelCase';

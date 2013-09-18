@@ -73,6 +73,10 @@ class WinkBrace_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_Code
         // If it's a php reserved var, then its ok.
         if (in_array($varName, $phpReservedVars) === true)
             return;
+        
+        // allow Codeception defaults
+        if ($varName == 'I')
+            return;
 
         $objOperator = $phpcsFile->findNext(array(T_WHITESPACE), ($stackPtr + 1), null, true);
         if ($tokens[$objOperator]['code'] === T_OBJECT_OPERATOR)
