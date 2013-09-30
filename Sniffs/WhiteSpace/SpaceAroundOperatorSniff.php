@@ -64,6 +64,12 @@ class WinkBrace_Sniffs_WhiteSpace_SpaceAroundOperatorSniff implements PHP_CodeSn
                 return;
         }
         
+        // assignment operator can have leading & -> =& (even though it is discouraged to use)
+        if ($tokens[$stackPtr]['code'] === T_EQUAL && $tokens[$stackPtr + 1]['code'] === T_BITWISE_AND)
+        {
+            return;
+        }
+        
         // all operators MUST have a space before and after them.
         // only the ! operator requires only a trailing space (because a space is not allowed after openening parenthesis
         $data = array($tokens[$stackPtr]['content']);
