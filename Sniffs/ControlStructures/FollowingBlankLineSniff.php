@@ -71,10 +71,10 @@ class WinkBrace_Sniffs_ControlStructures_FollowingBlankLineSniff implements PHP_
             for ($i = $closer + 1; $i < count($tokens); $i++)
             {
                 // the first non-whitespace token should be 2 lines below the closing bracket
-                // other closing brackets, php end tag, elseif and else are the exception
+                // other closing brackets, php end tag, 2nd catch, elseif and else are the exception
                 if (! in_array($tokens[$i]['code'], array(T_WHITESPACE, T_COMMENT)))
                 {
-                    if (in_array($tokens[$i]['code'], array(T_CLOSE_CURLY_BRACKET, T_ELSE, T_ELSEIF, T_CLOSE_TAG)))
+                    if (in_array($tokens[$i]['code'], array(T_CLOSE_CURLY_BRACKET, T_ELSE, T_ELSEIF, T_CLOSE_TAG, T_CATCH)))
                     {
                         return;
                     }
