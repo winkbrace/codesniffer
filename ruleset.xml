@@ -30,7 +30,7 @@
  <!-- 2.4 Indenting -->
 
  <!-- Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting. -->
- <rule ref="Generic.WhiteSpace.ScopeIndent"/>
+ <!-- checked in WhiteSpace/ScopeIndent -->
  <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
 
  <!-- 2.5 Keywords and True/False/Null -->
