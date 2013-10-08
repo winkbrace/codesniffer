@@ -10,7 +10,7 @@
  * @package   PHP_CodeSniffer
  * @author    Bas de Ruiter <info@basderuiter.nl>
  */
-class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Sniff
+class WinkBrace_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
@@ -58,7 +58,7 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
      *
      * @var int
      */
-    private $_openTagIndent = 0;
+    private $openTagIndent = 0;
 
 
     /**
@@ -94,7 +94,7 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
             if (empty($tokens[$stackPtr]['conditions']) === true)
             {
                 // Only record top-level PHP tags.
-                $this->_openTagIndent = ($tokens[$stackPtr]['column'] - 1);
+                $this->openTagIndent = ($tokens[$stackPtr]['column'] - 1);
             }
 
             return;
@@ -397,7 +397,7 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
             }
             else
             {
-                return ($this->_openTagIndent + 1);
+                return ($this->openTagIndent + 1);
             }
         }
 
@@ -448,6 +448,5 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
         return $indent;
 
     }//end calculateExpectedIndent()
-
 
 }//end class
