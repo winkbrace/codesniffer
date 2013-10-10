@@ -29,8 +29,7 @@
  */
 class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSniffer_Sniff
 {
-
-
+    
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -64,17 +63,25 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
         // closures are allowed to be closed in one line
         if ($tokens[$tokens[$stackPtr]['scope_condition']]['code'] === T_CLOSURE)
             return;
+
         
-        // Allow opening brace immediately next to closing brace to indicate empty body
         $openBrace   = $tokens[$stackPtr]['scope_opener'];
         $closeBrace  = $tokens[$stackPtr]['scope_closer'];
         
+        // if scope closer is not a brace, it's the ender for php html templating like "endforeach"
+        if ($tokens[$closeBrace]['code'] !== T_CLOSE_CURLY_BRACKET)
+            return;
+        
+        // Allow opening brace immediately next to closing brace to indicate empty body
         if ($tokens[$openBrace]['line'] === $tokens[$closeBrace]['line']
             && $tokens[$openBrace]['column'] === $tokens[$closeBrace]['column'] - 1
             )
         {
             return;
         }
+        
+        
+        var_dump($tokens[$closeBrace]);
 
         // We need to actually find the first piece of content on this line,
         // as if this is a method with tokens before it (public, static etc)
