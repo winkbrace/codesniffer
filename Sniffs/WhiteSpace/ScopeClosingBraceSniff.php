@@ -96,12 +96,13 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
         $startColumn = $tokens[$lineStart]['column'];
         $scopeStart  = $tokens[$stackPtr]['scope_opener'];
         $scopeEnd    = $tokens[$stackPtr]['scope_closer'];
-
+        $scopeCondition = $tokens[$stackPtr]['scope_condition'];
+        
         // Check that the closing brace is on it's own line.
         $lastContent = $phpcsFile->findPrevious(array(T_WHITESPACE), ($scopeEnd - 1), $scopeStart, true);
         if ($tokens[$lastContent]['line'] === $tokens[$scopeEnd]['line'])
         {
-            if ($tokens[$scopeEnd]['code'] !== T_BREAK)  // switch statements are allowed on one line
+            if (! in_array($tokens[$scopeCondition]['code'], array(T_CASE, T_DEFAULT)))  // switch statements contents are allowed on one line
             {
                 $error = 'Closing brace must be on a line by itself';
                 $phpcsFile->addError($error, $scopeEnd, 'ContentBefore');
@@ -111,9 +112,9 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
 
         // Check now that the closing brace is lined up correctly.
         $braceIndent = $tokens[$scopeEnd]['column'];
-        if (in_array($tokens[$stackPtr]['code'], array(T_CASE, T_DEFAULT)) === false)
+        if ($braceIndent !== $startColumn)
         {
-            if ($braceIndent !== $startColumn)
+            if (! in_array($tokens[$stackPtr]['code'], array(T_CASE, T_DEFAULT)))  // switch statements contents are allowed on one line
             {
                 $error = 'Closing brace indented incorrectly; expected %s spaces, found %s';
                 $data  = array(
