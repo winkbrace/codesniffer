@@ -61,6 +61,10 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
         if (isset($tokens[$stackPtr]['scope_closer']) === false)
             return;
         
+        // closures are allowed to be closed in one line
+        if ($tokens[$tokens[$stackPtr]['scope_condition']]['code'] === T_CLOSURE)
+            return;
+        
         // Allow opening brace immediately next to closing brace to indicate empty body
         $openBrace   = $tokens[$stackPtr]['scope_opener'];
         $closeBrace  = $tokens[$stackPtr]['scope_closer'];
@@ -97,8 +101,7 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
         $lastContent = $phpcsFile->findPrevious(array(T_WHITESPACE), ($scopeEnd - 1), $scopeStart, true);
         if ($tokens[$lastContent]['line'] === $tokens[$scopeEnd]['line'])
         {
-            // switch statements are allowed on one line
-            if ($tokens[$scopeEnd]['code'] !== T_BREAK)
+            if ($tokens[$scopeEnd]['code'] !== T_BREAK)  // switch statements are allowed on one line
             {
                 $error = 'Closing brace must be on a line by itself';
                 $phpcsFile->addError($error, $scopeEnd, 'ContentBefore');

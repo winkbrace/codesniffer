@@ -1,29 +1,12 @@
 <?php
 /**
- * Generic_Sniffs_Formatting_DisallowMultipleStatementsSniff.
- *
- * PHP version 5
- *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @link      http://pear.php.net/package/PHP_CodeSniffer
- */
-
-/**
- * Generic_Sniffs_Formatting_DisallowMultipleStatementsSniff.
+ * WinkBrace_Sniffs_Formatting_DisallowMultipleStatementsSniff
  *
  * Ensures each statement is on a line by itself.
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
- * @author    Greg Sherwood <gsherwood@squiz.net>
- * @copyright 2006-2012 Squiz Pty Ltd (ABN 77 084 670 600)
- * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
- * @version   Release: 1.4.6
- * @link      http://pear.php.net/package/PHP_CodeSniffer
+ * @author    Bas de Ruiter <winkbrace@gmail.com>
  */
 class WinkBrace_Sniffs_Formatting_DisallowMultipleStatementsSniff implements PHP_CodeSniffer_Sniff
 {
@@ -84,8 +67,8 @@ class WinkBrace_Sniffs_Formatting_DisallowMultipleStatementsSniff implements PHP
             // check what scope we are in
             for ($i = $stackPtr - 1; $i > 0; $i--)
             {
-                // Ignore multiple statements in a SWITCH statement.
-                if (in_array($tokens[$i]['code'], array(T_SWITCH, T_CASE, T_DEFAULT)))
+                // Ignore multiple statements in a SWITCH statement or CLOSURE.
+                if (in_array($tokens[$i]['code'], array(T_SWITCH, T_CASE, T_DEFAULT, T_CLOSURE)))
                 {
                     return;
                 }

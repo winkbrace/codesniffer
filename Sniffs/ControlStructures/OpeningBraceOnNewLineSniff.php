@@ -51,7 +51,7 @@ class WinkBrace_Sniffs_ControlStructures_OpeningBraceOnNewLineSniff implements P
         // if control statement has no brackets then there's nothing to check
         if (empty($tokens[$stackPtr]['scope_opener']))
             return;
-
+        
         // opening bracket must be 1 line below the closing parenthesis (in case of multi line if condition for example)
         $structureClose     = ! empty($tokens[$stackPtr]['parenthesis_closer']) ? $tokens[$stackPtr]['parenthesis_closer'] : $stackPtr;
         $structureCloseLine = $tokens[$structureClose]['line'];
