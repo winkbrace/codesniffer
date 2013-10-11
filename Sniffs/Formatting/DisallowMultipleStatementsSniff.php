@@ -73,6 +73,13 @@ class WinkBrace_Sniffs_Formatting_DisallowMultipleStatementsSniff implements PHP
                     return;
                 }
                 
+                // multiple statements in a html template is ok
+                $phptag = $phpcsFile->findPrevious(T_OPEN_TAG, $stackPtr);
+                if ($tokens[$phptag]['line'] === $tokens[$stackPtr]['line'])
+                {
+                    return;
+                }
+                
                 // In any other scope opener, multiple statements on 1 line is not ok
                 if (in_array($tokens[$i]['code'], PHP_CodeSniffer_Tokens::$scopeOpeners))
                 {
