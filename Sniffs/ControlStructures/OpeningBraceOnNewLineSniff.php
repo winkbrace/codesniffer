@@ -47,9 +47,12 @@ class WinkBrace_Sniffs_ControlStructures_OpeningBraceOnNewLineSniff implements P
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
-
-        // if control statement has no brackets then there's nothing to check
+        
+        // if control statement has no scope opener then there's nothing to check
         if (empty($tokens[$stackPtr]['scope_opener']))
+            return;
+        // scope opener is not a brace, but a colon ( foreach: ) then that is no brace ^^
+        if ($tokens[$tokens[$stackPtr]['scope_opener']] !== T_OPEN_CURLY_BRACKET)
             return;
         
         // opening bracket must be 1 line below the closing parenthesis (in case of multi line if condition for example)

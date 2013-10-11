@@ -64,7 +64,7 @@ class WinkBrace_Sniffs_ControlStructures_FollowingBlankLineSniff implements PHP_
     {
         $tokens = $phpcsFile->getTokens();
         
-        if (isset($tokens[$stackPtr]['scope_closer']) === true)
+        if (isset($tokens[$stackPtr]['scope_closer']) && $tokens[$stackPtr]['scope_closer'] === T_CLOSE_CURLY_BRACKET)
         {
             $closer = $tokens[$stackPtr]['scope_closer'];
             

@@ -140,6 +140,12 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Sn
                 break;
             }
         }
+        
+        // if there is a php opten tag on the line, then it's probably html templating,
+        // and we don't want to check indentation in that case
+        $lineOpenTag = $phpcsFile->findPrevious(array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO), $stackPtr);
+        if ($tokens[$lineOpenTag]['line'] === $tokens[$stackPtr]['line'])
+            return;
 
         // Based on the conditions that surround this token, determine the
         // indent that we expect this current content to be.

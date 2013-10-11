@@ -80,9 +80,6 @@ class WinkBrace_Sniffs_WhiteSpace_ScopeClosingBraceSniff implements PHP_CodeSnif
             return;
         }
         
-        
-        var_dump($tokens[$closeBrace]);
-
         // We need to actually find the first piece of content on this line,
         // as if this is a method with tokens before it (public, static etc)
         // or an if with an else before it, then we need to start the scope
