@@ -39,14 +39,19 @@ class WinkBrace_Sniffs_Comparisons_EqualitySniff implements PHP_CodeSniffer_Snif
         
         foreach (array($tokens[$augend], $tokens[$addend]) as $token)
         {
-            if (in_array($token['code'], array(T_LNUMBER, T_DNUMBER, T_TRUE, T_FALSE)))
+            if (in_array($token['code'], array(T_TRUE, T_FALSE)))
             {
-                $error = 'Comparison with number or boolean must use identical operator. %s found.';
+                $error = 'Comparison with boolean must use identical operator. %s found.';
                 $data = array($tokens[$stackPtr]['content']);
                 $phpcsFile->addError($error, $stackPtr, 'EqualityInsteadOfIdenticality', $data);
             }
-            
-            if (in_array($token['code'], array(T_NULL)))
+            elseif ($token['code'] == T_LNUMBER && in_array($token['content'], array(0, 1)))
+            {
+                $error = 'Comparison with 0 or 1 must use identical operator. %s found.';
+                $data = array($tokens[$stackPtr]['content']);
+                $phpcsFile->addError($error, $stackPtr, 'EqualityInsteadOfIdenticality', $data);
+            }
+            elseif (in_array($token['code'], array(T_NULL)))
             {
                 $error = 'Comparison with null must only be done using is_null().';
                 $phpcsFile->addError($error, $stackPtr, 'ComparingWithNull');
